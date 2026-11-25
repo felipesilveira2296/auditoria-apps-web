@@ -14,7 +14,7 @@ Estes itens seguem a legislação brasileira (CDC e Decreto nº 7.962/2013) e ve
 
 **87. Cancelamento de assinaturas** — Verifique cancelamento pelo mesmo meio da contratação, com poucos passos, sem obstáculos ou dark patterns, confirmação imediata e efeitos claros sobre acesso e dados.
 
-**88. Política de reembolso** — Verifique política escrita e o direito de arrependimento de 7 dias em contratação online (CDC, art. 49), com fluxo funcional de solicitação e estorno.
+**88. Política de reembolso** — Verifique política escrita e o direito de arrependimento de 7 dias, contados da contratação ou do recebimento do produto/serviço, em contratação fora do estabelecimento comercial, como a online (CDC, art. 49; Decreto nº 7.962/2013, art. 5º), com fluxo funcional de solicitação e estorno.
 
 **89. Identificação do fornecedor** — Verifique razão social/nome, CNPJ ou CPF, endereço físico e eletrônico e canal de atendimento em local visível (Decreto nº 7.962/2013), além de SAC funcional.
 

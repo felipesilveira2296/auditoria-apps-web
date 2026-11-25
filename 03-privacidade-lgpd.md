@@ -22,7 +22,7 @@ Estes itens verificam se o produto e a documentação refletem obrigações lega
 
 **81. Exclusão de dados** — Verifique exclusão de conta pelo próprio usuário ou por solicitação, cobrindo banco, storage, caches, provedores e backups (com prazo de expiração). Preserve apenas o que tiver obrigação legal de guarda, documentando o motivo.
 
-**82. Retenção de dados** — Verifique prazos por tipo de dado e rotina automática de exclusão/anonimização. Considere a guarda de registros de acesso por 6 meses exigida a provedores de aplicação (Marco Civil, art. 15) e obrigações fiscais.
+**82. Retenção de dados** — Verifique prazos por tipo de dado e rotina automática de exclusão/anonimização. Considere a guarda sigilosa dos registros de acesso por 6 meses exigida de provedores de aplicação constituídos como pessoa jurídica com atividade organizada e fins econômicos (Marco Civil, art. 15), além de obrigações fiscais.
 
 **83. Contratos com operadores** — Inventarie provedores que tratam dados (hospedagem, banco, e-mail, pagamentos, analytics, IA, suporte) e verifique termos/DPA, localização dos dados, transferência internacional e subcontratados.
 

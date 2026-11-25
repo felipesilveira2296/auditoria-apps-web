@@ -58,7 +58,7 @@ Autenticação segura, controle de acesso, criptografia, HTTPS/TLS, hash de senh
 
 **66. Resposta a incidentes** — Procure plano documentado: quem decide, como revogar chaves, derrubar sessões, isolar o sistema, preservar evidências e restaurar backup. Ausência de documento é **Problema confirmado** antes do lançamento.
 
-**67. Notificação de incidentes** — Verifique procedimento para avaliar risco e comunicar ANPD e titulares quando o incidente puder causar risco ou dano relevante, no prazo regulamentar (Resolução CD/ANPD nº 15/2024), com modelo de comunicação e registro interno do incidente.
+**67. Notificação de incidentes** — Verifique procedimento para avaliar risco e comunicar ANPD e titulares quando o incidente puder causar risco ou dano relevante, em até 3 dias úteis a partir do conhecimento do incidente (Resolução CD/ANPD nº 15/2024, art. 6º; agentes de pequeno porte e legislação setorial podem ter prazos próprios), com modelo de comunicação e registro interno do incidente.
 
 **68. Testes de segurança** — Procure testes automatizados de autorização (usuário sem acesso recebe 401/403), validação de entrada e regressões de segurança; SAST/secret scanning no CI. Pentest externo é recomendação conforme risco, nunca executado pelo agente contra produção.
 
@@ -70,7 +70,7 @@ Autenticação segura, controle de acesso, criptografia, HTTPS/TLS, hash de senh
 
 **72. Licenças de uso** — Verifique licenças das dependências (copyleft como GPL/AGPL em produto fechado), fontes, imagens, ícones, vídeos e modelos de IA usados. Registre ativos sem licença comprovada.
 
-**73. Transparência sobre IA** — Se o app usa IA, verifique se o usuário é informado quando interage com IA ou recebe conteúdo gerado, quais dados são enviados ao provedor, se são usados para treinamento e quais limites/erros a IA pode ter. Decisões automatizadas relevantes exigem possibilidade de revisão (LGPD, art. 20).
+**73. Transparência sobre IA** — Se o app usa IA, verifique se o usuário é informado quando interage com IA ou recebe conteúdo gerado, quais dados são enviados ao provedor, se são usados para treinamento e quais limites/erros a IA pode ter. Decisões tomadas unicamente com base em tratamento automatizado que afetem os interesses do titular devem permitir pedido de revisão e informação sobre os critérios usados (LGPD, art. 20).
 
 ## Como comprovar
 
