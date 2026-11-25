@@ -1,6 +1,6 @@
 # Auditoria de apps web
 
-**109 verificações de desempenho, segurança, LGPD, direito do consumidor e SEO técnico para auditar aplicações web com agentes de IA**, antes de lançar e depois de cada mudança importante. Funciona com qualquer stack e traz guias específicos por framework, começando por React e Next.js.
+**109 verificações de desempenho, segurança, LGPD, direito do consumidor e SEO técnico para auditar aplicações web com agentes de IA**, antes de lançar e depois de cada mudança importante. Funciona com qualquer stack e traz guias específicos para React/Next.js e sites estáticos.
 
 Apps criados com ajuda de IA ficam prontos rápido, mas costumam ir para produção com chaves expostas, banco sem controle de acesso, rotas sem autorização, cookies sem consentimento e páginas invisíveis para o Google. Este repositório é um conjunto de prompts estruturados que faz o agente (Claude Code, Cursor, GitHub Copilot, Codex ou similar) auditar o projeto **com evidências**, em vez de achismo, e entregar um relatório priorizado.
 
@@ -34,8 +34,9 @@ Os itens são independentes de framework. Os [guias de stack](stacks/) mostram o
 | Guia | Cobre |
 |---|---|
 | [`stacks/react-next.md`](stacks/react-next.md) | React (Vite, CRA, SPA) e Next.js (App Router e Pages Router) |
+| [`stacks/sites-estaticos.md`](stacks/sites-estaticos.md) | HTML à mão e geradores (Hugo, Jekyll, Eleventy, Astro estático) em hospedagens estáticas |
 
-Sem guia para a sua stack (Vue/Nuxt, Laravel, Django, Rails, WordPress, Astro, site estático...), a auditoria funciona do mesmo jeito: o agente adapta cada item e registra as adaptações no relatório. Guias novos são bem-vindos.
+Sem guia para a sua stack (Vue/Nuxt, Laravel, Django, Rails, WordPress...), a auditoria funciona do mesmo jeito: o agente adapta cada item e registra as adaptações no relatório. Guias novos são bem-vindos.
 
 ## Como usar
 

@@ -5,6 +5,7 @@ Os itens 01–109 são independentes de framework. Os guias desta pasta dizem **
 | Guia | Cobre |
 |---|---|
 | [`react-next.md`](react-next.md) | React (Vite, CRA, SPA) e Next.js (App Router e Pages Router) |
+| [`sites-estaticos.md`](sites-estaticos.md) | HTML à mão e geradores (Hugo, Jekyll, Eleventy, Astro estático) em GitHub Pages, Netlify, Cloudflare Pages, Firebase Hosting, Vercel ou servidor próprio |
 
 Sem guia para a sua stack, a auditoria funciona do mesmo jeito: o agente traduz cada item para os equivalentes do projeto e registra as adaptações no relatório (veja o passo 4 do [método](../00-metodo.md)).
 
