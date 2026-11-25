@@ -1,4 +1,4 @@
-# Auditoria React/Next — Desempenho
+# Auditoria de apps web — Desempenho
 
 Escopo: itens 01–42, IDs `PERF-`. Leia antes [`00-metodo.md`](00-metodo.md): modo de trabalho, estados, relatório e regras para implementar valem para todos os arquivos. A numeração dos itens é global e não muda entre arquivos.
 
@@ -7,7 +7,7 @@ Escopo: itens 01–42, IDs `PERF-`. Leia antes [`00-metodo.md`](00-metodo.md): m
 Antes de recomendar mudanças, obtenha quando for seguro:
 
 - lint, typecheck, testes e build suportados pelo projeto;
-- tamanho total e por rota dos bundles JS/CSS, chunks e dependências grandes;
+- tamanho total e por rota do JavaScript e CSS entregues, chunks e dependências grandes;
 - Lighthouse/equivalente mobile para rotas principais;
 - LCP, INP/TBT, CLS, FCP e TTFB, separando laboratório de dados reais;
 - número, tamanho e cascata das requisições de uma jornada crítica;
@@ -27,15 +27,15 @@ Não compare o servidor de desenvolvimento com metas de produção sem explicita
 
 **04. Orçamentos** — Procure limites automatizados de JS por rota, imagens, Web Vitals e regressões no CI. Baseie novos limites na linha de base.
 
-## B. React e Next.js
+## B. Renderização e frontend
 
-**05. Estratégia de renderização** — Em Next, avalie SSR, SSG, ISR, RSC, streaming e cliente por rota conforme atualização, personalização e SEO. Em SPA, avalie shell e buscas após montagem. Não converta tudo para SSR.
+**05. Estratégia de renderização** — Avalie por rota se o HTML deve vir pronto do servidor, ser pré-gerado no build (com ou sem revalidação), ser transmitido em partes (streaming) ou montado no cliente, conforme frequência de atualização, personalização e SEO. Em SPA, avalie shell e buscas após montagem. Não converta tudo para renderização no servidor.
 
-**06. Client Components e hidratação** — No App Router, procure `use client` alto demais, props grandes, providers globais e bibliotecas que poderiam ficar em ilhas menores. Identifique custo/erros de hidratação.
+**06. JavaScript no cliente e hidratação** — Procure páginas que enviam e executam mais JavaScript do que a interação exige: componentes interativos maiores que o necessário, estado global carregado em todas as rotas, bibliotecas que poderiam ficar em partes menores (ilhas) e scripts carregados em páginas que não os usam. Em frameworks com hidratação, identifique custo e erros de hidratação.
 
-**07. Suspense, streaming e carregamento** — Localize telas vazias, spinners e waterfalls. Verifique skeletons com geometria do conteúdo, fallbacks acessíveis e boundaries locais.
+**07. Estados de carregamento e streaming** — Localize telas vazias, spinners e waterfalls. Verifique skeletons com geometria do conteúdo, fallbacks acessíveis e carregamento por região da página, em vez de bloquear a tela inteira.
 
-**08. Renders desnecessários** — Use React Profiler quando possível. Procure estado alto, contextos amplos, selectors ausentes, referências recriadas e efeitos que derivam estado. Não aplique memoização em massa.
+**08. Renderizações desnecessárias** — Use o profiler do framework quando possível. Procure estado guardado alto demais na árvore, estado global amplo, assinaturas sem seletor, referências recriadas a cada renderização e efeitos que só derivam estado. Não aplique memoização em massa.
 
 **09. Listas longas** — Verifique paginação, renderização progressiva e virtualização. Preserve busca, teclado, leitores de tela, altura dinâmica e exportação.
 
@@ -43,11 +43,11 @@ Não compare o servidor de desenvolvimento com metas de produção sem explicita
 
 ## C. Rede, dados e APIs
 
-**11. Chamadas duplicadas** — Procure buscas repetidas, efeitos duplicados e revalidações excessivas. Diferencie Strict Mode dev de produção e reutilize a solução de cache já adotada.
+**11. Chamadas duplicadas** — Procure buscas repetidas, efeitos duplicados e revalidações excessivas. Diferencie comportamentos exclusivos do modo de desenvolvimento (que podem executar efeitos duas vezes) da produção e reutilize a solução de cache já adotada.
 
 **12. Waterfalls** — Identifique awaits sequenciais independentes no cliente e servidor. Paralelize apenas o que for independente, com falhas parciais e limites de concorrência.
 
-**13. Busca/autocompletar** — Verifique debounce coerente, `AbortController`, respostas fora de ordem, mínimo de caracteres, cache e acessibilidade. Não fixe 300 ms sem avaliar a experiência.
+**13. Busca/autocompletar** — Verifique debounce coerente, cancelamento de pedidos antigos (ex.: `AbortController`), respostas fora de ordem, mínimo de caracteres, cache e acessibilidade. Não fixe 300 ms sem avaliar a experiência.
 
 **14. Paginação** — Procure listas sem limite, limite máximo ou ordenação estável. Prefira cursor quando dados mudam frequentemente e evite itens perdidos/duplicados.
 
@@ -69,11 +69,11 @@ Não compare o servidor de desenvolvimento com metas de produção sem explicita
 
 **22. Terceiros** — Inventarie analytics, pixels, chats, mapas, vídeos e widgets. Meça custo, use estratégia apropriada e respeite consentimento.
 
-**23. Fontes** — Verifique WOFF2, subconjuntos, pesos realmente usados, `font-display`, preload seletivo e fallback compatível. Em Next, avalie `next/font`.
+**23. Fontes** — Verifique WOFF2, subconjuntos, pesos realmente usados, `font-display`, preload seletivo e fallback compatível. Prefira o recurso de otimização de fontes do framework, quando houver.
 
 ## E. Imagens, mídia e estabilidade
 
-**24. Imagens** — Inventarie PNG/JPEG grandes, SVG inadequado, dimensões excessivas e falta de `srcset`/`sizes`. Em Next, avalie `next/image`. WebP/AVIF só vence se tamanho e qualidade forem melhores.
+**24. Imagens** — Inventarie PNG/JPEG grandes, SVG inadequado, dimensões excessivas e falta de `srcset`/`sizes`. Avalie o componente ou pipeline de imagens do framework, da CDN ou do CMS. WebP/AVIF só vence se tamanho e qualidade forem melhores.
 
 **25. Prioridade/lazy loading** — Carregue abaixo da dobra sob demanda, nunca a imagem LCP. Verifique prioridade, preload, largura/altura e placeholders.
 
@@ -103,7 +103,7 @@ Não compare o servidor de desenvolvimento com metas de produção sem explicita
 
 **36. Escala horizontal** — Procure sessão, arquivos, locks, cache e filas em memória. Verifique health/readiness, shutdown gracioso, afinidade e idempotência.
 
-**37. Concorrência/backpressure** — Procure `Promise.all` sem limite, uploads em memória, endpoints caros sem rate limit e filas sem controle.
+**37. Concorrência/backpressure** — Procure paralelismo sem limite (ex.: `Promise.all`, `asyncio.gather`, goroutines sem controle), uploads em memória, endpoints caros sem rate limit e filas sem controle.
 
 **38. Runtime/cold start** — Em serverless/edge, avalie bundle da função, inicialização, compatibilidade, duração e cold start. Não mova acesso ao banco distante ou bibliotecas incompatíveis para edge.
 
@@ -121,7 +121,7 @@ Não compare o servidor de desenvolvimento com metas de produção sem explicita
 
 - **Skeleton/CLS:** rede lenta, geometria semelhante e CLS sem regressão.
 - **Imagens:** tamanho transferido próximo ao exibido, formato realmente menor e LCP priorizado.
-- **Duplicidade:** conte chamadas no build de produção e explique Strict Mode.
+- **Duplicidade:** conte chamadas no build de produção e explique diferenças do modo de desenvolvimento.
 - **Debounce:** digitação não gera chamada útil por tecla; pedido antigo é cancelado/ignorado.
 - **Paginação:** limite fixo, ordem estável e navegação sem perder/duplicar itens.
 - **Cache:** compare frio/quente e valide header, chave, escopo e invalidação.
@@ -133,10 +133,10 @@ Não compare o servidor de desenvolvimento com metas de produção sem explicita
 - **Lazy loading:** fora da dobra não baixa cedo e LCP não atrasa.
 - **Paralelismo:** waterfall simultâneo sem carga insegura.
 - **Índice:** plano e duração melhoram com volume representativo.
-- **SSR/SSG/RSC:** HTML traz conteúdo esperado sem regressão de TTFB/LCP/hidratação.
+- **Renderização no servidor/pré-renderização:** HTML traz conteúdo esperado sem regressão de TTFB/LCP/hidratação.
 - **Bundle:** compare builds equivalentes, total e por rota.
 - **Virtualização:** DOM limitado, rolagem e acessibilidade preservadas.
 - **Pool:** conexões estáveis sob teste controlado.
-- **Renders:** Profiler mostra menos commits/tempo na interação-alvo.
+- **Renderizações:** profiler do framework mostra menos atualizações/tempo na interação-alvo.
 - **Fontes:** pesos limitados, sem origem não planejada e texto legível durante carga.
 - **Escala:** retirar uma instância em ambiente controlado não perde sessão/trabalho.

@@ -1,4 +1,4 @@
-# Auditoria React/Next — Privacidade e LGPD
+# Auditoria de apps web — Privacidade e LGPD
 
 Escopo: itens 74–83, IDs `CONF-`. Leia antes [`00-metodo.md`](00-metodo.md): modo de trabalho, estados, relatório e regras para implementar valem para todos os arquivos. A numeração dos itens é global e não muda entre arquivos.
 

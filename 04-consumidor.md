@@ -1,4 +1,4 @@
-# Auditoria React/Next — Consumidor e transparência comercial
+# Auditoria de apps web — Consumidor e transparência comercial
 
 Escopo: itens 84–92, IDs `CONF-`. Leia antes [`00-metodo.md`](00-metodo.md): modo de trabalho, estados, relatório e regras para implementar valem para todos os arquivos. A numeração dos itens é global e não muda entre arquivos.
 

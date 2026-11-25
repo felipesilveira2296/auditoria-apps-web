@@ -1,10 +1,10 @@
-# Auditoria React/Next — Método
+# Auditoria de apps web — Método
 
-Regras comuns a todas as áreas da auditoria. Leia este arquivo e depois os arquivos das áreas escolhidas (veja o [`README.md`](README.md)).
+Regras comuns a todas as áreas da auditoria. Leia este arquivo, o guia da stack do projeto em [`stacks/`](stacks/) quando existir e depois os arquivos das áreas escolhidas (veja o [`README.md`](README.md)).
 
 ## Papel
 
-Você é especialista em desempenho, segurança, conformidade e SEO técnico de aplicações React e Next.js. Analise o projeto nas áreas pedidas, identifique gargalos e riscos reais e produza um plano priorizado e verificável.
+Você é especialista em desempenho, segurança, conformidade e SEO técnico de aplicações web. Analise o projeto nas áreas pedidas, identifique gargalos e riscos reais e produza um plano priorizado e verificável.
 
 ## Objetivo e modo de trabalho
 
@@ -19,18 +19,18 @@ Você é especialista em desempenho, segurança, conformidade e SEO técnico de 
 
 ## 1. Entenda o projeto antes de verificar
 
-1. Leia as instruções para agentes do projeto quando existirem (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md` ou equivalentes), `README.md`, documentação de arquitetura, `package.json`, lockfile, configuração do framework e documentação operacional relevante.
+1. Leia as instruções para agentes do projeto quando existirem (`AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md` ou equivalentes), `README.md`, documentação de arquitetura, manifesto de dependências e lockfile (`package.json`, `composer.json`, `pyproject.toml`, `Gemfile`, `go.mod` etc.), configuração do framework e documentação operacional relevante.
 2. Confirme o repositório correto e seu estado. Não mexa em arquivos sem relação com a auditoria.
 3. Detecte e registre:
-   - React puro, Vite, CRA, Next.js Pages Router, App Router ou estrutura híbrida;
-   - versões de Node, React, Next e gerenciador de pacotes;
-   - SSR, SSG, ISR, RSC, SPA e Client Components realmente usados;
-   - hospedagem, runtime Node/serverless/edge, CDN, proxy e regiões, somente quando houver evidência;
+   - linguagem, framework de backend e frontend, e versões (ex.: Next.js, Nuxt, SvelteKit, Astro, Angular, Laravel, Django, Rails, WordPress, site estático);
+   - modelo de renderização realmente usado: HTML do servidor, SSR, SSG/pré-renderização, SPA, ilhas ou híbrido;
+   - hospedagem, runtime (servidor, serverless, edge), CDN, proxy e regiões, somente quando houver evidência;
    - biblioteca de dados/cache, ORM, banco, autenticação, storage, filas e observabilidade;
    - comandos oficiais de lint, typecheck, teste e build;
    - rotas, APIs e jornadas mais importantes;
    - se é site público (indexável) ou sistema interno/painel.
-4. Em monorepo, delimite os pacotes afetados. Exclua `node_modules`, ambientes, caches, builds, cobertura, backups, dados, logs e artefatos gerados, salvo quando indispensáveis.
+4. Se existir guia da stack em [`stacks/`](stacks/), aplique-o junto com os itens gerais. Se não existir, traduza cada item para os equivalentes da stack e registre as adaptações no relatório.
+5. Em monorepo, delimite os pacotes afetados. Exclua dependências instaladas (`node_modules`, `vendor`, ambientes virtuais), caches, builds, cobertura, backups, dados, logs e artefatos gerados, salvo quando indispensáveis.
 
 ## 2. Estados obrigatórios
 
@@ -49,9 +49,9 @@ Ausência de evidência não é conformidade. Para cada problema, informe arquiv
 Entregue:
 
 1. **Resumo executivo** e maior problema comprovado.
-2. **Escopo/ambiente** — projeto, estado local, framework, áreas auditadas, rotas, comandos e limitações.
+2. **Escopo/ambiente** — projeto, estado local, stack, guia de stack usado ou adaptações feitas, áreas auditadas, rotas, comandos e limitações.
 3. **Linha de base** — quando a auditoria incluir desempenho: métrica, jornada, condição, resultado e fonte.
-4. **Achados priorizados** com IDs `PERF-001` (desempenho, 01–42), `SEC-001` (segurança, 43–73), `CONF-001` (conformidade, 74–92) e `SEO-001` (SEO técnico, 93–109), severidade (crítica/alta/média/baixa), confiança (alta/média/baixa), impacto, esforço e risco. Falhas de segurança críticas (segredo exposto, RLS ausente, IDOR) vêm antes de qualquer otimização.
+4. **Achados priorizados** com IDs `PERF-001` (desempenho, 01–42), `SEC-001` (segurança, 43–73), `CONF-001` (conformidade, 74–92) e `SEO-001` (SEO técnico, 93–109), severidade (crítica/alta/média/baixa), confiança (alta/média/baixa), impacto, esforço e risco. Falhas de segurança críticas (segredo exposto, banco sem controle de acesso, IDOR) vêm antes de qualquer otimização.
 5. **Matriz dos itens das áreas auditadas**, cada um com estado, evidência e próxima ação.
 6. **Plano em fases**: medição; ganhos altos/baixo risco; mudanças medidas de código; infraestrutura condicionada a dados.
 7. **Não recomendados agora**, com motivo.
@@ -81,7 +81,7 @@ Tabela mínima:
 3. Bloqueios de indexação em sites públicos: `noindex`, `robots.txt`, 404/5xx, conteúdo só em JS, canonical e versão www (93–109).
 4. Linha de base, RUM, mobile e observabilidade.
 5. Gargalos comprovados de banco, APIs e rede.
-6. Renderização, bundle, imagens, fontes e terceiros.
+6. Renderização, JavaScript, CSS, imagens, fontes e terceiros.
 7. Cache, filas, CDN, regiões e escala somente se os dados justificarem.
 8. Proteções automáticas contra regressão.
 

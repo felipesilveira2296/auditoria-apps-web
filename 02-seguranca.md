@@ -1,4 +1,4 @@
-# Auditoria React/Next — Segurança
+# Auditoria de apps web — Segurança
 
 Escopo: itens 43–73, IDs `SEC-`. Leia antes [`00-metodo.md`](00-metodo.md): modo de trabalho, estados, relatório e regras para implementar valem para todos os arquivos. A numeração dos itens é global e não muda entre arquivos.
 
@@ -6,17 +6,17 @@ Escopo: itens 43–73, IDs `SEC-`. Leia antes [`00-metodo.md`](00-metodo.md): mo
 
 Nunca exiba, copie ou registre valores de segredos, tokens, senhas ou dados pessoais no relatório: cite apenas arquivo, linha, nome da variável e tipo de exposição. Não faça testes de invasão contra produção nem contra serviços de terceiros.
 
-**43. Chaves de API ocultas** — Procure chaves no código do cliente, bundle gerado e variáveis públicas (`NEXT_PUBLIC_`, `VITE_`, `REACT_APP_`). Chaves privadas só no servidor (`server-only`, Route Handlers, Server Actions). Verifique se `.env*` está no `.gitignore` e se existe `.env.example` sem valores reais.
+**43. Chaves de API ocultas** — Procure chaves no código enviado ao navegador, no JavaScript gerado pelo build, em templates HTML e em variáveis de ambiente marcadas como públicas pelo framework (ex.: `NEXT_PUBLIC_`, `VITE_`, `NUXT_PUBLIC_`, `PUBLIC_`). Chaves privadas só no código que roda no servidor. Verifique se arquivos `.env*` e de credenciais estão no `.gitignore` e se existe um exemplo sem valores reais.
 
 **44. Segredos no Git** — Verifique arquivos rastreados e histórico com a ferramenta já disponível (ex.: `gitleaks`, `git log -p` filtrado). Segredo encontrado no histórico exige rotação da credencial; apenas remover o arquivo não basta. Não reescreva histórico sem autorização.
 
 **45. Chave pública do banco** — Confirme que o cliente usa somente a chave pública/anon (ex.: Supabase `anon`, Firebase config pública) e que chaves administrativas (`service_role`, credenciais de admin, connection string) nunca chegam ao navegador.
 
-**46. RLS ativo** — Em bancos expostos ao cliente (Supabase/Postgres), verifique RLS habilitado em todas as tabelas acessíveis e políticas por operação (`select`, `insert`, `update`, `delete`). Tabela sem política ou com `using (true)` indevido é problema. Em Firebase, audite as Security Rules.
+**46. RLS ativo** — Em bancos acessados diretamente pelo cliente (ex.: Supabase/Postgres), verifique RLS habilitado em todas as tabelas acessíveis e políticas por operação (`select`, `insert`, `update`, `delete`). Tabela sem política ou com `using (true)` indevido é problema. Em Firebase, audite as Security Rules. Se o cliente nunca acessa o banco diretamente, marque **Não se aplica** e cubra o controle de acesso nos itens 48–50.
 
 **47. Criptografia de dados sensíveis** — Identifique documentos, dados de saúde, financeiros e tokens de terceiros. Verifique TLS em trânsito, criptografia em repouso do provedor e, quando necessário, criptografia por campo com chave fora do banco. Não registre dados sensíveis em logs.
 
-**48. Autenticação no servidor** — Toda Server Action, Route Handler, API e loader com dados privados deve validar a sessão no servidor. Esconder botão ou proteger só no cliente/middleware não é autorização. Verifique validação de JWT (assinatura, expiração, emissor).
+**48. Autenticação no servidor** — Toda rota, controller, API, ação de formulário e função de carregamento de dados que lida com dados privados deve validar a sessão no servidor. Esconder botão, proteger só no cliente ou só em um middleware de rotas não é autorização. Verifique validação de JWT (assinatura, expiração, emissor).
 
 **49. Acesso aos registros travado** — Verifique autorização por recurso com negação por padrão: cada consulta filtra pelo dono, organização ou papel do usuário. Procure endpoints que listam ou retornam registros sem filtro de escopo.
 
@@ -30,21 +30,21 @@ Nunca exiba, copie ou registre valores de segredos, tokens, senhas ou dados pess
 
 **54. Proteção contra bots** — Verifique proteção em cadastro, contato e formulários públicos (ex.: Turnstile, hCaptcha, honeypot, verificação de e-mail). Avalie impacto em acessibilidade e privacidade; não exija captcha onde rate limit basta.
 
-**55. Consultas parametrizadas** — Procure SQL montado por concatenação ou template string, `$queryRawUnsafe`, `sql.raw`, filtros dinâmicos sem lista permitida e injeção em ORDER BY/colunas. Use parâmetros do driver/ORM.
+**55. Consultas parametrizadas** — Procure SQL montado por concatenação, interpolação ou template string, métodos de consulta "crua" do ORM usados com entrada do usuário (ex.: `$queryRawUnsafe`, `sql.raw`, `DB::raw`, `.extra()`/`RawSQL`, `find_by_sql`), filtros dinâmicos sem lista permitida e injeção em ORDER BY/colunas. Use parâmetros do driver/ORM. Em bancos NoSQL, procure operadores vindos do usuário (ex.: `$where`, `$ne`).
 
-**56. Validar toda entrada** — Toda entrada do cliente (corpo, query, params, headers, formulários, webhooks) deve ser validada no servidor com esquema (ex.: Zod), tipo, tamanho, formato e campos permitidos. Validação no cliente é só experiência. Webhooks exigem verificação de assinatura.
+**56. Validar toda entrada** — Toda entrada do cliente (corpo, query, params, headers, formulários, webhooks) deve ser validada no servidor com esquema (ex.: Zod, Valibot, Pydantic, validação do Laravel/Rails/Django), tipo, tamanho, formato e campos permitidos. Validação no cliente é só experiência. Webhooks exigem verificação de assinatura.
 
-**57. Escape de conteúdo do usuário** — Procure `dangerouslySetInnerHTML`, `innerHTML`, Markdown/HTML renderizado sem sanitização (ex.: DOMPurify), links `javascript:`, `href`/`src` vindos do usuário e dados injetados em `<script>`. React escapa texto, mas não esses casos.
+**57. Escape de conteúdo do usuário** — Procure inserção de HTML bruto (ex.: `innerHTML`, `dangerouslySetInnerHTML`, `v-html`, `{@html}`, `|safe`, `{!! !!}`, `html_safe`/`raw`), Markdown/HTML renderizado sem sanitização (ex.: DOMPurify), links `javascript:`, `href`/`src` vindos do usuário e dados injetados em `<script>`. Frameworks e templates escapam texto por padrão, mas não esses casos.
 
 **58. Restringir uploads** — Verifique tipo validado pelo conteúdo (não só extensão), tamanho máximo, quantidade, nome gerado pelo servidor, bucket privado com URL assinada, bloqueio de SVG/HTML executável e upload sem carregar tudo em memória.
 
 **59. Backup automático do banco** — Confirme backup automático, retenção, PITR quando disponível, cópia fora do provedor principal se o risco exigir e teste de restauração documentado. Não execute restauração em produção; teste somente em ambiente separado e autorizado.
 
-**60. Cabeçalhos de segurança** — Verifique `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `frame-ancestors`/`X-Frame-Options`, `Referrer-Policy` e `Permissions-Policy`. Em Next, avalie `headers()` ou middleware; comece CSP em modo report-only se houver risco de quebra.
+**60. Cabeçalhos de segurança** — Verifique `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `frame-ancestors`/`X-Frame-Options`, `Referrer-Policy` e `Permissions-Policy`. Configure no framework, no servidor web ou na CDN; comece CSP em modo report-only se houver risco de quebra.
 
 **61. Forçar HTTPS** — Verifique redirecionamento HTTP→HTTPS, HSTS, ausência de conteúdo misto, cookies `Secure` e URLs de callback/OAuth apenas em HTTPS.
 
-**62. Atualizar dependências** — Rode `npm audit`/`pnpm audit`/`yarn npm audit` e `outdated` sem alterar o lockfile. Priorize CVEs exploráveis em Next, React, auth, ORM e parsers. Verifique Dependabot/Renovate. Não atualize automaticamente; proponha lotes pequenos com testes.
+**62. Atualizar dependências** — Rode a auditoria e a listagem de pacotes desatualizados do gerenciador do projeto sem alterar o lockfile (ex.: `npm audit`, `pnpm audit`, `composer audit`, `pip-audit`, `bundle audit`, `govulncheck`). Priorize CVEs exploráveis no framework, autenticação, ORM e parsers. Em CMS, inclua núcleo, plugins e temas. Verifique Dependabot/Renovate. Não atualize automaticamente; proponha lotes pequenos com testes.
 
 ## J. Segurança operacional e governança
 
@@ -74,7 +74,7 @@ Autenticação segura, controle de acesso, criptografia, HTTPS/TLS, hash de senh
 
 ## Como comprovar
 
-- **Segredos:** busca no bundle de produção e no histórico Git não encontra chaves privadas.
+- **Segredos:** busca no código entregue ao navegador e no histórico Git não encontra chaves privadas.
 - **RLS/autorização:** usuário de teste B recebe 401/403 ou lista vazia ao ler, editar ou excluir dados do usuário A.
 - **Cookies/cabeçalhos/HTTPS:** headers da resposta mostram flags e políticas esperadas; HTTP redireciona para HTTPS.
 - **Rate limit:** tentativas acima do limite retornam `429` sem revelar existência de conta.
