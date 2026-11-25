@@ -62,6 +62,6 @@ Sugestões e correções são bem-vindas por issue ou pull request. Novos itens 
 
 ## Licença
 
-[CC BY 4.0](LICENSE): use, adapte e compartilhe, inclusive comercialmente, desde que dê o crédito.
+© 2026 Felipe Silveira. Licenciado sob [CC BY 4.0](LICENSE) ([resumo em português](https://creativecommons.org/licenses/by/4.0/deed.pt-br)): use, adapte e compartilhe, inclusive comercialmente, desde que dê o crédito e indique as alterações.
 
 Criado por **Felipe Silveira** · FSJ Desenvolvimento.
